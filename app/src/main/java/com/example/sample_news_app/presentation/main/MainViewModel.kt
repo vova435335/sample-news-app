@@ -6,7 +6,6 @@ import com.example.sample_news_app.data.NewsApi
 import com.example.sample_news_app.presentation.main.model.MainState
 import com.example.sample_news_app.presentation.main.model.New
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +28,6 @@ internal class MainViewModel : ViewModel() {
     }
 
     private fun loadData() = viewModelScope.launch {
-        delay(3000)
         _screenState.emit(
             when (val result = getNews()) {
                 emptyList<New>() -> MainState.Error
