@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">sample-news-app</string>
+    <string name="main_title_top_bar">Новости</string>
+    <string name="main_error_text">Непредвиденная ошибка</string>
 </resources>
