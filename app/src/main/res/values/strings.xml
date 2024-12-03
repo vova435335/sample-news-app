@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">sample-news-app</string>
+    <string name="main_title_top_bar">Новости</string>
 </resources>

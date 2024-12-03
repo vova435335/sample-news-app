@@ -10,33 +10,37 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sample_news_app.R
 import com.example.sample_news_app.ui.theme.SampleNewsAppTheme
+import com.example.sample_news_app.presentation.main.model.New as NewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun MainScreen() {
+internal fun MainScreen(viewModel: MainViewModel = viewModel()) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            CenterAlignedTopAppBar(
+            TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
                     Text(
-                        text = "Новости",
+                        text = stringResource(R.string.main_title_top_bar),
                     )
                 }
             )
@@ -47,21 +51,27 @@ internal fun MainScreen() {
                     .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
             ) {
-                News()
+                News(viewModel.news)
             }
         }
     )
 }
 
 @Composable
-private fun News() = Column {
-    (0..10).map {
-        New()
+private fun News(news: List<NewModel>) = Column {
+    news.forEach {
+        New(
+            title = it.title,
+            description = it.description,
+        )
     }
 }
 
 @Composable
-private fun New() = Card(
+private fun New(
+    title: String,
+    description: String,
+) = Card(
     modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -72,14 +82,14 @@ private fun New() = Card(
                 .padding(8.dp)
         ) {
             Text(
-                text = "По следам Tesla: Lucid готовит что-то новенькое, доступное не только для богачей",
+                text = title,
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Предстоящие новинки Lucid грозят конкуренцией Tesla",
+                text = description,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
