@@ -17,11 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sample_news_app.R
 import com.example.sample_news_app.ui.theme.SampleNewsAppTheme
@@ -30,6 +32,8 @@ import com.example.sample_news_app.presentation.main.model.New as NewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MainScreen(viewModel: MainViewModel = viewModel()) {
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -51,7 +55,7 @@ internal fun MainScreen(viewModel: MainViewModel = viewModel()) {
                     .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
             ) {
-                News(viewModel.news)
+                News(screenState)
             }
         }
     )
