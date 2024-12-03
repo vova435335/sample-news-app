@@ -3,6 +3,7 @@ package com.example.sample_news_app.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sample_news_app.data.NewsApi
+import com.example.sample_news_app.presentation.main.model.MainState
 import com.example.sample_news_app.presentation.main.model.New
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -13,8 +14,8 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainViewModel : ViewModel() {
-    private val _screenState = MutableStateFlow<List<New>>(emptyList())
+internal class MainViewModel : ViewModel() {
+    private val _screenState = MutableStateFlow<MainState>(MainState.Loading)
     val screenState = _screenState.asStateFlow()
 
     private val retrofit = Retrofit.Builder()
@@ -29,7 +30,12 @@ class MainViewModel : ViewModel() {
 
     private fun loadData() = viewModelScope.launch {
         delay(3000)
-        _screenState.emit(getNews())
+        _screenState.emit(
+            when (val result = getNews()) {
+                emptyList<New>() -> MainState.Error
+                else -> MainState.Normal(news = result)
+            }
+        )
     }
 
     private suspend fun getNews(): List<New> = withContext(Dispatchers.IO) {

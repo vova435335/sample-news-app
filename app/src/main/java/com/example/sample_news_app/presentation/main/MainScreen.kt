@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,6 +19,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,14 +28,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sample_news_app.R
+import com.example.sample_news_app.presentation.main.model.MainState
 import com.example.sample_news_app.ui.theme.SampleNewsAppTheme
 import com.example.sample_news_app.presentation.main.model.New as NewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    ScreenContent(screenState = screenState)
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ScreenContent(screenState: MainState) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -53,16 +60,25 @@ internal fun MainScreen(viewModel: MainViewModel = viewModel()) {
             Box(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
             ) {
-                News(screenState)
+                when (screenState) {
+                    is MainState.Normal -> Normal(screenState.news)
+                    MainState.Loading -> Loading()
+                    MainState.Error -> Error()
+                }
             }
         }
     )
+
 }
 
 @Composable
-private fun News(news: List<NewModel>) = Column {
+private fun Normal(news: List<NewModel>) = Column(
+    modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())
+) {
     news.forEach {
         New(
             title = it.title,
@@ -100,9 +116,77 @@ private fun New(
     }
 )
 
+@Composable
+private fun Loading() = Box(
+    modifier = Modifier.fillMaxSize(),
+    contentAlignment = Alignment.Center,
+) {
+    CircularProgressIndicator()
+}
+
+@Composable
+private fun Error() = Box(
+    modifier = Modifier.fillMaxSize(),
+    contentAlignment = Alignment.Center,
+) {
+    Text(
+        text = stringResource(R.string.main_error_text),
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.error,
+    )
+}
 
 @Preview
 @Composable
-private fun PreviewMainScreen() = SampleNewsAppTheme {
-    MainScreen()
+private fun PreviewMainScreenNormal() = SampleNewsAppTheme {
+    ScreenContent(
+        screenState = MainState.Normal(
+            news = listOf(
+                NewModel(
+                    title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                ),
+                NewModel(
+                    title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                ),
+                NewModel(
+                    title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                ),
+                NewModel(
+                    title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                ),
+                NewModel(
+                    title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                ),
+                NewModel(
+                    title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                ),
+                NewModel(
+                    title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                ),
+                NewModel(
+                    title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                ),
+            )
+        )
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewMainScreenLoading() = SampleNewsAppTheme {
+    ScreenContent(screenState = MainState.Loading)
+}
+
+@Preview
+@Composable
+private fun PreviewMainScreenError() = SampleNewsAppTheme {
+    ScreenContent(screenState = MainState.Error)
 }
