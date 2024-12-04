@@ -1,4 +1,4 @@
-package com.example.sample_news_app.presentation.main
+package com.example.sample_news_app.presentation.news
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,19 +28,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sample_news_app.R
-import com.example.sample_news_app.presentation.main.model.MainState
+import com.example.sample_news_app.presentation.news.model.NewsState
 import com.example.sample_news_app.ui.theme.SampleNewsAppTheme
-import com.example.sample_news_app.presentation.main.model.New as NewModel
+import com.example.sample_news_app.presentation.news.model.New as NewModel
 
 @Composable
-internal fun MainScreen(viewModel: MainViewModel = viewModel()) {
+internal fun NewsScreen(viewModel: NewsViewModel = viewModel()) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     ScreenContent(screenState = screenState)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ScreenContent(screenState: MainState) {
+private fun ScreenContent(screenState: NewsState) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -63,9 +63,9 @@ private fun ScreenContent(screenState: MainState) {
                     .fillMaxSize()
             ) {
                 when (screenState) {
-                    is MainState.Normal -> Normal(screenState.news)
-                    MainState.Loading -> Loading()
-                    MainState.Error -> Error()
+                    is NewsState.Normal -> Normal(screenState.news)
+                    NewsState.Loading -> Loading()
+                    NewsState.Error -> Error()
                 }
             }
         }
@@ -138,9 +138,9 @@ private fun Error() = Box(
 
 @Preview
 @Composable
-private fun PreviewMainScreenNormal() = SampleNewsAppTheme {
+private fun PreviewNewsScreenNormal() = SampleNewsAppTheme {
     ScreenContent(
-        screenState = MainState.Normal(
+        screenState = NewsState.Normal(
             news = listOf(
                 NewModel(
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
@@ -181,12 +181,12 @@ private fun PreviewMainScreenNormal() = SampleNewsAppTheme {
 
 @Preview
 @Composable
-private fun PreviewMainScreenLoading() = SampleNewsAppTheme {
-    ScreenContent(screenState = MainState.Loading)
+private fun PreviewNewsScreenLoading() = SampleNewsAppTheme {
+    ScreenContent(screenState = NewsState.Loading)
 }
 
 @Preview
 @Composable
-private fun PreviewMainScreenError() = SampleNewsAppTheme {
-    ScreenContent(screenState = MainState.Error)
+private fun PreviewNewsScreenError() = SampleNewsAppTheme {
+    ScreenContent(screenState = NewsState.Error)
 }

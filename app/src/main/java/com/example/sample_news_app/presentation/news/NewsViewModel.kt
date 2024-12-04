@@ -1,10 +1,10 @@
-package com.example.sample_news_app.presentation.main
+package com.example.sample_news_app.presentation.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sample_news_app.data.NewsApi
-import com.example.sample_news_app.presentation.main.model.MainState
-import com.example.sample_news_app.presentation.main.model.New
+import com.example.sample_news_app.presentation.news.model.New
+import com.example.sample_news_app.presentation.news.model.NewsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,8 +13,8 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-internal class MainViewModel : ViewModel() {
-    private val _screenState = MutableStateFlow<MainState>(MainState.Loading)
+internal class NewsViewModel : ViewModel() {
+    private val _screenState = MutableStateFlow<NewsState>(NewsState.Loading)
     val screenState = _screenState.asStateFlow()
 
     private val retrofit = Retrofit.Builder()
@@ -30,8 +30,8 @@ internal class MainViewModel : ViewModel() {
     private fun loadData() = viewModelScope.launch {
         _screenState.emit(
             when (val result = getNews()) {
-                emptyList<New>() -> MainState.Error
-                else -> MainState.Normal(news = result)
+                emptyList<New>() -> NewsState.Error
+                else -> NewsState.Normal(news = result)
             }
         )
     }
