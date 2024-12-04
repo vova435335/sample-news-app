@@ -36,7 +36,7 @@ import com.example.sample_news_app.domain.model.New as NewModel
 @Composable
 internal fun NewsScreen(
     viewModel: NewsViewModel = viewModel(),
-    openNewDetails: () -> Unit,
+    openNewDetails: (id: String) -> Unit,
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     ScreenContent(
@@ -49,7 +49,7 @@ internal fun NewsScreen(
 @Composable
 private fun ScreenContent(
     screenState: NewsState,
-    openNewDetails: () -> Unit,
+    openNewDetails: (id: String) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -90,7 +90,7 @@ private fun ScreenContent(
 @Composable
 private fun Normal(
     news: List<NewModel>,
-    openNewDetails: () -> Unit,
+    openNewDetails: (id: String) -> Unit,
 ) = Column(
     modifier = Modifier
         .fillMaxSize()
@@ -98,6 +98,7 @@ private fun Normal(
 ) {
     news.forEach {
         New(
+            id = it.id,
             title = it.title,
             description = it.description,
             onNewClick = openNewDetails,
@@ -107,14 +108,15 @@ private fun Normal(
 
 @Composable
 private fun New(
+    id: String,
     title: String,
     description: String,
-    onNewClick: () -> Unit,
+    onNewClick: (id: String) -> Unit,
 ) = Card(
     modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 16.dp, vertical = 8.dp)
-        .clickable { onNewClick() },
+        .clickable { onNewClick(id) },
     content = {
         Column(
             modifier = Modifier

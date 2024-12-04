@@ -11,13 +11,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.sample_news_app.ui.theme.SampleNewsAppTheme
 
 @Composable
-internal fun NewDetailsScreen() {
+internal fun NewDetailsScreen(viewModel: NewDetailsViewModel) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "New details screen",
+            text = "New details screen with id: ${viewModel.id}",
             style = MaterialTheme.typography.titleLarge,
         )
     }
@@ -26,5 +26,5 @@ internal fun NewDetailsScreen() {
 @Preview
 @Composable
 private fun PreviewNewDetailsScreen() = SampleNewsAppTheme {
-    NewDetailsScreen()
+
 }
