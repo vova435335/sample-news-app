@@ -39,7 +39,10 @@ internal fun NewsNavGraph(
         id?.let {
             val viewModel = viewModel<NewDetailsViewModel>()
             viewModel.id = id
-            NewDetailsScreen(viewModel = viewModel)
+            NewDetailsScreen(
+                viewModel = viewModel,
+                navigationBack = { navController.popBackStack() }
+            )
         }
     }
 }

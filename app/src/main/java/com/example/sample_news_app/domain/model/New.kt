@@ -4,4 +4,5 @@ data class New(
     val id: String,
     val title: String,
     val description: String,
+    val content: String,
 )

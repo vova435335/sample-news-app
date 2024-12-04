@@ -22,7 +22,8 @@ class NewsInteractor(private val newsApi: NewsApi) {
                         New(
                             id = index.toString(),
                             title = new.title,
-                            description = new.description
+                            description = new.description,
+                            content = new.content
                         )
                     }
                 )
@@ -33,4 +34,9 @@ class NewsInteractor(private val newsApi: NewsApi) {
             _news.emit(emptyList())
         }
     }
+
+    fun getNewById(id: String): New? =
+        _news.replayCache
+            .firstOrNull()
+            ?.firstOrNull { it.id == id }
 }

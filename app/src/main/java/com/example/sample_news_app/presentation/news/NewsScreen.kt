@@ -50,42 +50,39 @@ internal fun NewsScreen(
 private fun ScreenContent(
     screenState: NewsState,
     openNewDetails: (id: String) -> Unit,
-) {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        text = stringResource(R.string.main_title_top_bar),
-                    )
-                }
-            )
-        },
-        content = { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            ) {
-                when (screenState) {
-                    is NewsState.Normal -> Normal(
-                        news = screenState.news,
-                        openNewDetails = openNewDetails,
-                    )
+) = Scaffold(
+    modifier = Modifier.fillMaxSize(),
+    topBar = {
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.primary,
+            ),
+            title = {
+                Text(
+                    text = stringResource(R.string.news_title_top_bar),
+                )
+            }
+        )
+    },
+    content = { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            when (screenState) {
+                is NewsState.Normal -> Normal(
+                    news = screenState.news,
+                    openNewDetails = openNewDetails,
+                )
 
-                    NewsState.Loading -> Loading()
-                    NewsState.Error -> Error()
-                }
+                NewsState.Loading -> Loading()
+                NewsState.Error -> Error()
             }
         }
-    )
-
-}
+    }
+)
 
 @Composable
 private fun Normal(
@@ -152,7 +149,7 @@ private fun Error() = Box(
     contentAlignment = Alignment.Center,
 ) {
     Text(
-        text = stringResource(R.string.main_error_text),
+        text = stringResource(R.string.news_error_text),
         style = MaterialTheme.typography.titleLarge,
         color = MaterialTheme.colorScheme.error,
     )
@@ -168,41 +165,49 @@ private fun PreviewNewsScreenNormal() = SampleNewsAppTheme {
                     id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
                     description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
                     id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
                     id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
                     id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
                     id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
                     id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
                     id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
                     id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
             )
         ),

@@ -2,8 +2,8 @@ package com.example.sample_news_app.presentation.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sample_news_app.App
 import com.example.sample_news_app.domain.model.New
+import com.example.sample_news_app.newsInteractorStatic
 import com.example.sample_news_app.presentation.news.model.NewsState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +13,7 @@ internal class NewsViewModel : ViewModel() {
     private val _screenState = MutableStateFlow<NewsState>(NewsState.Loading)
     val screenState = _screenState.asStateFlow()
 
-    private val newsInteractor = App.getInteractor()
+    private val newsInteractor = newsInteractorStatic
 
     init {
         loadData()
