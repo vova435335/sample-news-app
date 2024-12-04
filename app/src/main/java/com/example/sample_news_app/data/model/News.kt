@@ -9,5 +9,6 @@ data class News(
     data class Article(
         @SerializedName("title") val title: String,
         @SerializedName("description") val description: String,
+        @SerializedName("content") val content: String,
     )
 }

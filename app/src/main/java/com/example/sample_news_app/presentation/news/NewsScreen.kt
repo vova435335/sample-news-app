@@ -1,5 +1,6 @@
-package com.example.sample_news_app.presentation.main
+package com.example.sample_news_app.presentation.news
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,73 +29,91 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sample_news_app.R
-import com.example.sample_news_app.presentation.main.model.MainState
+import com.example.sample_news_app.presentation.news.model.NewsState
 import com.example.sample_news_app.ui.theme.SampleNewsAppTheme
-import com.example.sample_news_app.presentation.main.model.New as NewModel
+import com.example.sample_news_app.domain.model.New as NewModel
 
 @Composable
-internal fun MainScreen(viewModel: MainViewModel = viewModel()) {
+internal fun NewsScreen(
+    viewModel: NewsViewModel = viewModel(),
+    openNewDetails: (id: String) -> Unit,
+) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-    ScreenContent(screenState = screenState)
+    ScreenContent(
+        screenState = screenState,
+        openNewDetails = openNewDetails,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ScreenContent(screenState: MainState) {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        text = stringResource(R.string.main_title_top_bar),
-                    )
-                }
-            )
-        },
-        content = { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            ) {
-                when (screenState) {
-                    is MainState.Normal -> Normal(screenState.news)
-                    MainState.Loading -> Loading()
-                    MainState.Error -> Error()
-                }
+private fun ScreenContent(
+    screenState: NewsState,
+    openNewDetails: (id: String) -> Unit,
+) = Scaffold(
+    modifier = Modifier.fillMaxSize(),
+    topBar = {
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.primary,
+            ),
+            title = {
+                Text(
+                    text = stringResource(R.string.news_title_top_bar),
+                )
+            }
+        )
+    },
+    content = { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            when (screenState) {
+                is NewsState.Normal -> Normal(
+                    news = screenState.news,
+                    openNewDetails = openNewDetails,
+                )
+
+                NewsState.Loading -> Loading()
+                NewsState.Error -> Error()
             }
         }
-    )
-
-}
+    }
+)
 
 @Composable
-private fun Normal(news: List<NewModel>) = Column(
+private fun Normal(
+    news: List<NewModel>,
+    openNewDetails: (id: String) -> Unit,
+) = Column(
     modifier = Modifier
         .fillMaxSize()
         .verticalScroll(rememberScrollState())
 ) {
     news.forEach {
         New(
+            id = it.id,
             title = it.title,
             description = it.description,
+            onNewClick = openNewDetails,
         )
     }
 }
 
 @Composable
 private fun New(
+    id: String,
     title: String,
     description: String,
+    onNewClick: (id: String) -> Unit,
 ) = Card(
     modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 16.dp, vertical = 8.dp),
+        .padding(horizontal = 16.dp, vertical = 8.dp)
+        .clickable { onNewClick(id) },
     content = {
         Column(
             modifier = Modifier
@@ -130,7 +149,7 @@ private fun Error() = Box(
     contentAlignment = Alignment.Center,
 ) {
     Text(
-        text = stringResource(R.string.main_error_text),
+        text = stringResource(R.string.news_error_text),
         style = MaterialTheme.typography.titleLarge,
         color = MaterialTheme.colorScheme.error,
     )
@@ -138,55 +157,78 @@ private fun Error() = Box(
 
 @Preview
 @Composable
-private fun PreviewMainScreenNormal() = SampleNewsAppTheme {
+private fun PreviewNewsScreenNormal() = SampleNewsAppTheme {
     ScreenContent(
-        screenState = MainState.Normal(
+        screenState = NewsState.Normal(
             news = listOf(
                 NewModel(
+                    id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
+                    id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
+                    id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
+                    id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
+                    id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
+                    id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
+                    id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
                 NewModel(
+                    id = "",
                     title = "Пятую ночь подряд полиция разгоняет протесты в Тбилиси",
-                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела"
+                    description = "За всё время задержаны 258 человек, против пятерых возбуждены уголовные дела",
+                    content = "",
                 ),
             )
-        )
+        ),
+        openNewDetails = {},
     )
 }
 
 @Preview
 @Composable
-private fun PreviewMainScreenLoading() = SampleNewsAppTheme {
-    ScreenContent(screenState = MainState.Loading)
+private fun PreviewNewsScreenLoading() = SampleNewsAppTheme {
+    ScreenContent(
+        screenState = NewsState.Loading,
+        openNewDetails = {},
+    )
 }
 
 @Preview
 @Composable
-private fun PreviewMainScreenError() = SampleNewsAppTheme {
-    ScreenContent(screenState = MainState.Error)
+private fun PreviewNewsScreenError() = SampleNewsAppTheme {
+    ScreenContent(
+        screenState = NewsState.Error,
+        openNewDetails = {},
+    )
 }
