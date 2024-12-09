@@ -31,7 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.sample_news_app.R
 import com.example.sample_news_app.presentation.news.model.NewsState
 import com.example.sample_news_app.ui.theme.SampleNewsAppTheme
-import com.example.sample_news_app.domain.model.New as NewModel
+import com.example.sample_news_app.presentation.news.model.New as NewModel
 
 @Composable
 internal fun NewsScreen(
