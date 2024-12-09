@@ -1,7 +1,6 @@
 package com.example.sample_news_app.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -9,10 +8,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.sample_news_app.presentation.new_details.NewDetailsScreen
-import com.example.sample_news_app.presentation.new_details.NewDetailsViewModel
 import com.example.sample_news_app.presentation.news.NewsScreen
 
-private const val NEW_DETAIL_ID_KEY = "id"
+const val NEW_DETAIL_ID_KEY = "id"
 
 @Composable
 internal fun NewsNavGraph(
@@ -37,10 +35,7 @@ internal fun NewsNavGraph(
     ) { navBackStackEntry ->
         val id = navBackStackEntry.arguments?.getString(NEW_DETAIL_ID_KEY)
         id?.let {
-            val viewModel = viewModel<NewDetailsViewModel>()
-            viewModel.id = id
             NewDetailsScreen(
-                viewModel = viewModel,
                 navigationBack = { navController.popBackStack() }
             )
         }

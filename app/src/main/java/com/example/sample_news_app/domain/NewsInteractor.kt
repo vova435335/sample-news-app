@@ -35,7 +35,7 @@ class NewsInteractor(private val newsApi: NewsApi) {
         }
     }
 
-    fun getNewById(id: String): New? =
+    fun getNewById(id: String?): New? =
         _news.replayCache
             .firstOrNull()
             ?.firstOrNull { it.id == id }
