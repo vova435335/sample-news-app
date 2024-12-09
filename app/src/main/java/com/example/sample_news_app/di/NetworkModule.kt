@@ -1,7 +1,6 @@
 package com.example.sample_news_app.di
 
 import com.example.sample_news_app.data.NewsApi
-import com.example.sample_news_app.domain.NewsInteractor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,8 +23,4 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideApi(retrofit: Retrofit): NewsApi = retrofit.create(NewsApi::class.java)
-
-    @Provides
-    @Singleton
-    fun provideNewsInteractor(api: NewsApi): NewsInteractor = NewsInteractor(newsApi = api)
 }
